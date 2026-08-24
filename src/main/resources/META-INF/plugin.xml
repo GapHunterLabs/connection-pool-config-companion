@@ -1,0 +1,43 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>dev.gaphunter.connectionpoolconfigcompanion</id>
+    <name>Connection Pool Config Companion</name>
+    <vendor>Gap Hunter Labs</vendor>
+    <description><![CDATA[
+        <p>Warning on a HikariCP connection-pool setting
+        (<code>spring.datasource.hikari.*</code> or bare
+        <code>hikari.*</code>) set outside its own documented safe
+        range in a <code>.properties</code>/<code>.yml</code>/
+        <code>.yaml</code> config file: <code>connectionTimeout</code>
+        below 250ms, <code>maxLifetime</code> below 30000ms,
+        <code>idleTimeout</code> below 10000ms, or
+        <code>idleTimeout</code> set greater than or equal to
+        <code>maxLifetime</code> (HikariCP silently ignores
+        <code>idleTimeout</code> in that case -- a real, documented
+        gotcha, not an invented rule).</p>
+        <p><b>100% static text analysis</b> -- a plain-text line
+        scanner, not a real properties/YAML parser, so it works whether
+        the real HikariCP jar is on the classpath or not. Matches both
+        <code>connectionTimeout</code> (Java-property style) and
+        <code>connection-timeout</code> (Spring Boot's kebab-case
+        relaxed binding).</p>
+        <p>Stated honestly: v0.1 only checks the four thresholds
+        documented in HikariCP's own README/wiki -- it doesn't validate
+        <code>maximumPoolSize</code> or other settings that don't have a
+        single documented safe number (those depend on real workload
+        sizing).</p>
+        <p>Free. No license nags, no telemetry, no network calls.</p>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <localInspection language=""
+            groupName="Connection Pool Config Companion"
+            displayName="HikariCP setting outside documented safe range"
+            enabledByDefault="true"
+            level="WARNING"
+            implementationClass="dev.gaphunter.connectionpoolconfigcompanion.inspection.UnsafePoolConfigInspection"/>
+        <notificationGroup id="Connection Pool Config Companion" displayType="BALLOON"/>
+    </extensions>
+</idea-plugin>
