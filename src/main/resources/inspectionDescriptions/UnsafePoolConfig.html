@@ -1,0 +1,12 @@
+<html>
+<body>
+Reports a HikariCP setting (<code>spring.datasource.hikari.*</code> or <code>hikari.*</code>, in
+<code>.properties</code> or YAML) outside its documented safe range: <code>connectionTimeout</code> below 250 ms,
+<code>maxLifetime</code> below 30000 ms, <code>idleTimeout</code> below 10000 ms, or <code>idleTimeout</code> greater than or
+equal to <code>maxLifetime</code>.
+<!-- tooltip end -->
+<p>Outside these ranges the pool does not behave as configured; for example, HikariCP silently ignores
+<code>idleTimeout</code> when it is not lower than <code>maxLifetime</code>. Both the camelCase and Spring Boot kebab-case
+property names are recognized.</p>
+</body>
+</html>
